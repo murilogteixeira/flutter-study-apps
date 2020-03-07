@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,14 +18,6 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        //
-        // Tente executar seu aplicativo com "vibração". Você verá que o 
-        // aplicativo tem uma barra de ferramentas azul. Então, sem sair 
-        // do aplicativo, tente alterar o PrimarySwatch abaixo para Colors.green e, 
-        // em seguida, chame "hot reload" (pressione "r" no console em que você 
-        // executou "flutter run" ou simplesmente salve as alterações em "hot reload" 
-        // em um IDE do Flutter). Observe que o contador não foi redefinido para zero; 
-        // o aplicativo não é reiniciado.
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
@@ -41,20 +31,11 @@ class MyHomePage extends StatefulWidget {
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
-  //
-  // Este widget é a página inicial do seu aplicativo. É stateful, o que significa 
-  // que possui um objeto State (definido abaixo) que contém campos que afetam a 
-  // aparência.
 
   // This class is the configuration for the state. It holds the values (in this
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-  //
-  // Esta classe é a configuração para o estado. Ele mantém os valores (neste caso, 
-  // o título) fornecidos pelo pai (neste caso, o widget de aplicativo) e usados 
-  // pelo método de construção do Estado. Os campos em uma subclasse Widget sempre 
-  // são marcados como "final".
 
   final String title;
 
@@ -72,13 +53,6 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      //
-      // Essa chamada para setState informa à estrutura do Flutter que algo 
-      // mudou nesse estado, o que faz com que execute novamente o método de 
-      // construção abaixo, para que a exibição possa refletir os valores 
-      // atualizados. Se alterássemos _counter sem chamar setState (), 
-      // o método build não seria chamado novamente e, portanto, nada pareceria 
-      // acontecer.
       _counter++;
     });
   }
@@ -130,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: Icon(FontAwesomeIcons.plus, color: Colors.white,),
+        child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
