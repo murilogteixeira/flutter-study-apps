@@ -1,5 +1,5 @@
-name: projetoaula01
-description: A new Flutter application.
+name: projeto01
+description: A new Flutter project.
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -19,8 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  shared_preferences: 0.5.6+3
-  bot_toast: ^2.3.1
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2

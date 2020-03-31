@@ -1,4 +1,7 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:projetoaula01/service/user_service.dart';
+import 'package:projetoaula01/utils/message_utils.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -6,12 +9,33 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _userService = UserService();
+
   bool _showPassword = false;
 
   String _email;
   String _password;
 
   _login() {
+    try{
+      if(_formKey.currentState.validate()) {
+        _formKey.currentState.save();
+        _userService.login(_email, _password).then((user) {
+          if(user != null) {
+            // continuar
+          }
+          else {
+            // exibir msg
+          }
+        }).catchError((error) {
+          showError("Erro ao realizar login");
+        });
+      }
+    }
+    catch(e) {
+      showError("Erro ao realizar login");
+    }
 
   }
 
@@ -30,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Expanded(
             flex: 2,
             child: Form(
+              key: _formKey,
               child: ListView(
                 shrinkWrap: true,
                 children: <Widget>[
@@ -66,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscureText: !_showPassword,
                       validator: (password) {
                       if(password.isEmpty) {
-                        return "Informe o email";
+                        return "Informe a senha";
                       }
                         return null;
                       },
@@ -81,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: RaisedButton(
                       child: Text("Entrar"),
                       onPressed: () {
-
+                        _login();
                       },
                     ),
                   ),
