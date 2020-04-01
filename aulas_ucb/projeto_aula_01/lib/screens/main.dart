@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:projetoaula01/screens/auth/login.dart';
+import 'package:projetoaula01/screens/home/home.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,6 +21,11 @@ class MyApp extends StatelessWidget {
                 height: 40
             )
         ),
+        initialRoute: "home",
+        routes: {
+          "login": (context) => LoginScreen(),
+          "home": (context) => HomeScreen(),
+        },
         home: LoginScreen(),
       ),
     );

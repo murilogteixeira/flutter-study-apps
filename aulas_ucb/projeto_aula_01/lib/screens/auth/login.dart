@@ -1,4 +1,3 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:projetoaula01/service/user_service.dart';
 import 'package:projetoaula01/utils/message_utils.dart';
@@ -23,10 +22,10 @@ class _LoginScreenState extends State<LoginScreen> {
         _formKey.currentState.save();
         _userService.login(_email, _password).then((user) {
           if(user != null) {
-            // continuar
+            Navigator.of(context).pushReplacementNamed("home");
           }
           else {
-            // exibir msg
+            showError("Usuario nao cadastrado");
           }
         }).catchError((error) {
           showError("Erro ao realizar login");

@@ -1,8 +1,7 @@
-import 'package:flutter/services.dart';
-import 'package:projetoaula01/domain/User.dart';
+import 'package:projetoaula01/domain/user.dart';
 
 class UserService {
   Future<User> login(String email, String password) {
-    throw PlatformException(message: "Error");
+    return Future.value(User(name: "Murilo", email: "murilogteixeira@gmail.com"));
   }
 }
