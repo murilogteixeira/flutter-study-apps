@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Text("Cadastrar", textAlign: TextAlign.center, style: TextStyle(color: Colors.blue[700]),),
                     ),
                     onTap: () {
-
+                      Navigator.of(context).pushNamed("register");
                     },
                   ),
 
