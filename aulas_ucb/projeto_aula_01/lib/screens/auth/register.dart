@@ -1,26 +1,26 @@
+import 'package:catolica/service/usuario_service.dart';
+import 'package:catolica/utils/message_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:projetoaula01/service/user_service.dart';
-import 'package:projetoaula01/utils/message_utils.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  RegisterScreenState createState() => RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _userService = UserService();
+  UsuarioService _usuarioService;
 
   bool _showPassword = false;
 
   String _nome;
   String _email;
-  String _password;
+  String _senha;
 
   FocusNode _focusNome;
   FocusNode _focusEmail;
   FocusNode _focusSenha;
-
 
   @override
   void initState() {
@@ -40,34 +40,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   _register() {
-    try{
-      if(_formKey.currentState.validate()) {
-        _formKey.currentState.save();
-        _userService.criarUsuario(_nome, _email, _password).then((user) {
-            Navigator.of(context).pushReplacementNamed("home");
-        }).catchError((error) {
-          showError("Erro ao realizar login");
-        });
-      }
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      _usuarioService.criarUsuario(_nome, _email, _senha).then((usuario) {
+        Navigator.of(context).pushReplacementNamed("home");
+      }).catchError((error) {
+        print("Errooooooo!!!!!");
+        showError("Erro ao fazer login");
+      });
     }
-    catch(e) {
-      showError("Erro ao realizar login");
-    }
-
   }
 
   @override
   Widget build(BuildContext context) {
+    _usuarioService = Provider.of<UsuarioService>(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("Cadastro"),
+        title: Text("Cadastrar-se"),
       ),
       body: Column(
         children: <Widget>[
-          Container(
-            color: Colors.green,
+          SizedBox(
+            height: 50,
           ),
-
           Form(
             key: _formKey,
             child: ListView(
@@ -76,14 +72,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                   child: TextFormField(
-                    autofocus: true,
-                    focusNode: this._focusNome,
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(hintText: "", labelText: "email", icon: Icon(Icons.account_box)),
+                    autofocus: true,
+                    focusNode: this._focusNome,
                     validator: (nome) {
-                      if(nome.isEmpty) {
-                        return "Informe o email";
+                      if (nome.isEmpty) {
+                        return "Informe o nome";
                       }
                       return null;
                     },
@@ -91,76 +86,79 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       this._focusNome.unfocus();
                       this._focusEmail.requestFocus();
                     },
-                    onSaved: (nome) {
-                      _nome = nome;
+                    onSaved: (email) {
+                      this._email = email;
                     },
+                    decoration: InputDecoration(hintText: "nome", labelText: "nome", icon: Icon(Icons.account_box)),
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                   child: TextFormField(
                     keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
                     focusNode: _focusEmail,
-                    decoration: InputDecoration(hintText: "", labelText: "email", icon: Icon(Icons.email)),
+                    textInputAction: TextInputAction.next,
                     validator: (email) {
-                      if(email.isEmpty) {
-                        return "Informe o email";
+                      if (email.isEmpty) {
+                        return "Informe o email.";
                       }
                       return null;
                     },
-                    onFieldSubmitted: (email) {
+                    onFieldSubmitted: (nome) {
                       this._focusEmail.unfocus();
                       this._focusSenha.requestFocus();
                     },
                     onSaved: (email) {
-                      _email = email;
+                      this._email = email;
                     },
+                    decoration: InputDecoration(hintText: "email", labelText: "email", icon: Icon(Icons.email)),
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                   child: TextFormField(
                     keyboardType: TextInputType.text,
-                    textInputAction: TextInputAction.done,
+                    textInputAction: TextInputAction.send,
                     focusNode: _focusSenha,
-                    decoration: InputDecoration(hintText: "", labelText: "senha",
-                        icon: Icon(Icons.lock),
-                        suffixIcon: IconButton(icon: _showPassword ? Icon(Icons.visibility_off) : Icon(Icons.visibility), onPressed: () {
-                          setState(() {
-                            _showPassword = !_showPassword;
-                          });
-                        },)
-                    ),
-                    obscureText: !_showPassword,
-                    validator: (password) {
-                    if(password.isEmpty) {
-                      return "Informe a senha";
-                    }
+                    validator: (senha) {
+                      if (senha.isEmpty) {
+                        return "Informe a senha.";
+                      }
+                      if (senha.length < 6) {
+                        return "A senha deve conter mais de 6 caracteres.";
+                      }
                       return null;
                     },
-                    onFieldSubmitted: (senha) {
+                    onFieldSubmitted: (nome) {
                       this._focusSenha.unfocus();
-                      this._register();
+                      _register();
                     },
-                    onSaved: (password) {
-                      _password = password;
+                    onSaved: (senha) {
+                      this._senha = senha;
+                    },
+                    decoration: InputDecoration(
+                        hintText: "senha",
+                        labelText: "senha",
+                        icon: Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                            icon: Icon(_showPassword ? Icons.visibility_off : Icons.visibility),
+                            onPressed: () {
+                              setState(() {
+                                this._showPassword = !_showPassword;
+                              });
+                            })),
+                    obscureText: !_showPassword,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 30, left: 10, right: 10, bottom: 5),
+                  child: RaisedButton(
+                    child: Text("Enviar"),
+                    onPressed: () {
+                      _register();
                     },
                   ),
                 ),
-
-                InkWell(
-                  child: Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Text("Cadastrar", textAlign: TextAlign.center, style: TextStyle(color: Colors.blue[700]),),
-                  ),
-                  onTap: () {
-
-                  },
-                ),
-
               ],
             ),
           ),

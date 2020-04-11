@@ -1,55 +1,61 @@
+import 'package:catolica/service/usuario_service.dart';
+import 'package:catolica/utils/message_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:projetoaula01/service/user_service.dart';
-import 'package:projetoaula01/utils/message_utils.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _userService = UserService();
+  UsuarioService _usuarioService;
 
   bool _showPassword = false;
 
   String _email;
-  String _password;
+  String _senha;
+
+  @override
+  initState() {
+    super.initState();
+  }
 
   _login() {
-    try{
-      if(_formKey.currentState.validate()) {
-        _formKey.currentState.save();
-        _userService.login(_email, _password).then((user) {
-          if(user != null) {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+
+      try {
+        _usuarioService.entrarComEmailSenha(_email, _senha).then((usuario) {
+          if (usuario != null) {
             Navigator.of(context).pushReplacementNamed("home");
-          }
-          else {
-            showError("Usuario nao cadastrado");
+          } else {
+            showError("Usuário não cadastrado");
           }
         }).catchError((error) {
-          showError("Erro ao realizar login");
+          print("Errooooooo!!!!!");
+          showError("Erro ao fazer login");
         });
+      } catch (e) {
+        showError("Erro ao fazer login");
       }
     }
-    catch(e) {
-      showError("Erro ao realizar login");
-    }
-
   }
 
   @override
   Widget build(BuildContext context) {
+    _usuarioService = Provider.of<UsuarioService>(this.context);
+
     return Scaffold(
       body: Column(
         children: <Widget>[
           Expanded(
-            flex: 1 ,
+            flex: 1,
             child: Container(
               color: Colors.green,
             ),
           ),
-
           Expanded(
             flex: 2,
             child: Form(
@@ -60,48 +66,52 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     child: TextFormField(
-                      autofocus: true,
                       keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(hintText: "", labelText: "email", icon: Icon(Icons.email)),
+                      autofocus: true,
                       validator: (email) {
-                        if(email.isEmpty) {
-                          return "Informe o email";
+                        if (email.isEmpty) {
+                          return "Informe o email.";
                         }
                         return null;
                       },
                       onSaved: (email) {
-                        _email = email;
+                        this._email = email;
                       },
+                      decoration: InputDecoration(hintText: "email", labelText: "email", icon: Icon(Icons.email)),
                     ),
                   ),
-
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     child: TextFormField(
                       keyboardType: TextInputType.text,
-                      decoration: InputDecoration(hintText: "", labelText: "senha",
-                          icon: Icon(Icons.lock),
-                          suffixIcon: IconButton(icon: _showPassword ? Icon(Icons.visibility_off) : Icon(Icons.visibility), onPressed: () {
-                            setState(() {
-                              _showPassword = !_showPassword;
-                            });
-                          },)
-                      ),
-                      obscureText: !_showPassword,
-                      validator: (password) {
-                      if(password.isEmpty) {
-                        return "Informe a senha";
-                      }
+                      validator: (senha) {
+                        if (senha.isEmpty) {
+                          return "Informe a senha.";
+                        }
+                        if (senha.length < 6) {
+                          return "A senha deve conter mais de 6 caracteres.";
+                        }
                         return null;
                       },
-                      onSaved: (password) {
-                        _password = password;
+                      onSaved: (senha) {
+                        this._senha = senha;
                       },
+                      decoration: InputDecoration(
+                          hintText: "senha",
+                          labelText: "senha",
+                          icon: Icon(Icons.lock),
+                          suffixIcon: IconButton(
+                              icon: Icon(_showPassword ? Icons.visibility_off : Icons.visibility),
+                              onPressed: () {
+                                setState(() {
+                                  this._showPassword = !_showPassword;
+                                });
+                              })),
+                      obscureText: !_showPassword,
                     ),
                   ),
-
                   Padding(
-                    padding: const EdgeInsets.only(top: 30, right: 10, left: 10, bottom: 5),
+                    padding: const EdgeInsets.only(top: 30, left: 10, right: 10, bottom: 5),
                     child: RaisedButton(
                       child: Text("Entrar"),
                       onPressed: () {
@@ -109,27 +119,26 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
                   ),
-
                   InkWell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Text("Esqueci a senha", textAlign: TextAlign.center, style: TextStyle(color: Colors.blue[700]),),
-                    ),
-                    onTap: () {
-
-                    },
-                  ),
-
-                  InkWell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Text("Cadastrar", textAlign: TextAlign.center, style: TextStyle(color: Colors.blue[700]),),
-                    ),
                     onTap: () {
                       Navigator.of(context).pushNamed("register");
                     },
+                    child: Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Text("Cadastrar", textAlign: TextAlign.center, style: TextStyle(color: Colors.blue[700])),
+                    ),
                   ),
-
+                  InkWell(
+                    onTap: () {},
+                    child: Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Text(
+                        "Recuperar senha",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.blue[700]),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
