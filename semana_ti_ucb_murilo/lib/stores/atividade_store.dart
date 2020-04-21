@@ -11,9 +11,7 @@ abstract class _AtividadeStore with Store {
   ].asObservable();
 
   @action
-  addAtividade(Atividade _atividade) {
-    atividades.add(_atividade);
-  }
+  addAtividade(Atividade _atividade) => atividades.add(_atividade);
 
   @action
   removeAtividade(Atividade _atividade) =>  atividades.remove(_atividade);
