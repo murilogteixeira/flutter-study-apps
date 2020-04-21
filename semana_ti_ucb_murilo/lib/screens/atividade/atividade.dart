@@ -1,7 +1,7 @@
-import 'package:catolica/domain/atividade.dart';
-import 'package:catolica/service/atividade_service.dart';
-import 'package:catolica/service/usuario_service.dart';
-import 'package:catolica/widgets/form/date_time_form.dart';
+import 'package:semanatiucbmurilo/domain/atividade.dart';
+import 'package:semanatiucbmurilo/service/atividade_service.dart';
+import 'package:semanatiucbmurilo/service/usuario_service.dart';
+import 'package:semanatiucbmurilo/widgets/form/date_time_form.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

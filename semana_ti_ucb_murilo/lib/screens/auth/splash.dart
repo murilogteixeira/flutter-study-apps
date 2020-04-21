@@ -1,4 +1,4 @@
-import 'package:catolica/service/usuario_service.dart';
+import 'package:semanatiucbmurilo/service/usuario_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

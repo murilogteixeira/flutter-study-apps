@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:catolica/domain/usuario.dart';
-import 'package:catolica/stores/usuario_store.dart';
-import 'package:catolica/utils/navigator_utils.dart';
+import 'package:semanatiucbmurilo/domain/usuario.dart';
+import 'package:semanatiucbmurilo/stores/usuario_store.dart';
+import 'package:semanatiucbmurilo/utils/navigator_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UsuarioService {

@@ -1,15 +1,15 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:catolica/screens/atividade/atividade.dart';
-import 'package:catolica/screens/auth/login.dart';
-import 'package:catolica/screens/auth/recover.dart';
-import 'package:catolica/screens/auth/register.dart';
-import 'package:catolica/screens/auth/splash.dart';
-import 'package:catolica/screens/home/home.dart';
-import 'package:catolica/service/atividade_service.dart';
-import 'package:catolica/service/usuario_service.dart';
-import 'package:catolica/stores/atividade_store.dart';
-import 'package:catolica/stores/usuario_store.dart';
-import 'package:catolica/utils/navigator_utils.dart';
+import 'package:semanatiucbmurilo/screens/atividade/atividade.dart';
+import 'package:semanatiucbmurilo/screens/auth/login.dart';
+import 'package:semanatiucbmurilo/screens/auth/recover.dart';
+import 'package:semanatiucbmurilo/screens/auth/register.dart';
+import 'package:semanatiucbmurilo/screens/auth/splash.dart';
+import 'package:semanatiucbmurilo/screens/home/home.dart';
+import 'package:semanatiucbmurilo/service/atividade_service.dart';
+import 'package:semanatiucbmurilo/service/usuario_service.dart';
+import 'package:semanatiucbmurilo/stores/atividade_store.dart';
+import 'package:semanatiucbmurilo/stores/usuario_store.dart';
+import 'package:semanatiucbmurilo/utils/navigator_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

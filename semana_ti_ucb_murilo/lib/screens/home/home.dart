@@ -1,6 +1,6 @@
-import 'package:catolica/domain/atividade.dart';
-import 'package:catolica/service/atividade_service.dart';
-import 'package:catolica/service/usuario_service.dart';
+import 'package:semanatiucbmurilo/domain/atividade.dart';
+import 'package:semanatiucbmurilo/service/atividade_service.dart';
+import 'package:semanatiucbmurilo/service/usuario_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';

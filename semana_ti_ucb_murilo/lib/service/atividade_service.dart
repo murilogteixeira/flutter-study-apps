@@ -1,5 +1,5 @@
-import 'package:catolica/domain/atividade.dart';
-import 'package:catolica/stores/atividade_store.dart';
+import 'package:semanatiucbmurilo/domain/atividade.dart';
+import 'package:semanatiucbmurilo/stores/atividade_store.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 

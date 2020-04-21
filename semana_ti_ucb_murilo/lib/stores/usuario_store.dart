@@ -1,4 +1,4 @@
-import 'package:catolica/domain/usuario.dart';
+import 'package:semanatiucbmurilo/domain/usuario.dart';
 import 'package:mobx/mobx.dart';
 import 'package:rxdart/rxdart.dart';
 part 'usuario_store.g.dart';

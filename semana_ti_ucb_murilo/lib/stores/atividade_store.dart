@@ -1,4 +1,4 @@
-import 'package:catolica/domain/atividade.dart';
+import 'package:semanatiucbmurilo/domain/atividade.dart';
 import 'package:mobx/mobx.dart';
 part 'atividade_store.g.dart';
 
