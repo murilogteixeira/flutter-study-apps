@@ -1,3 +1,4 @@
+import 'package:catolica/domain/atividade.dart';
 import 'package:catolica/service/atividade_service.dart';
 import 'package:catolica/service/usuario_service.dart';
 import 'package:catolica/widgets/form/date_time_form.dart';
@@ -50,7 +51,10 @@ class AtividadeScreenState extends State<AtividadeScreen> {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
-      //todo: invocar o atividade service para salvar
+      Atividade atividade = Atividade(nome: _nome, descricao: _descricao, local: _local, dataHoraInicio: _dataHoraInicio, dataHoraFim: _dataHoraFim, foto: "https://picsum.photos/200");
+      _atividadeService.salvar(atividade).then((value) {
+        Navigator.of(context).pop();
+      });
     }
   }
 

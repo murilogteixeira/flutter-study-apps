@@ -13,8 +13,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final AtividadeService _atividadeService = new AtividadeService();
-
+  AtividadeService _atividadeService;
   UsuarioService _usuarioService;
 
   @override
@@ -25,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     _usuarioService = Provider.of<UsuarioService>(context);
+    _atividadeService = Provider.of<AtividadeService>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Semana TI Católica 2020"),
@@ -85,72 +85,158 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           }
 
-          return ListView(
-            children: snapshot.data.map((ativade) {
-              return Card(
-                  child: InkWell(
-                child: Container(
-                  height: 370,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(width: double.maxFinite, height: 150, child: Image.network(ativade.foto, fit: BoxFit.cover)),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
-                        child: Text(ativade.nome, style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
-                        child: Text(ativade.descricao, style: TextStyle(color: Colors.black54), overflow: TextOverflow.ellipsis, maxLines: 4),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
-                        child: Text("Início: ${DateFormat("dd/MM/yyyy HH:mm").format(ativade.dataHoraInicio)}",
-                            style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
-                        child: Text("Término: ${DateFormat("dd/MM/yyyy HH:mm").format(ativade.dataHoraInicio)}",
-                            style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)),
-                      ),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.end,
+          return Observer(
+            builder: (_) {
+              return ListView(
+                children: snapshot.data.map((atividade) {
+                  return Card(
+                    child: InkWell(
+                      child: Container(
+                        height: 370,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Observer(
-                              builder: (ctx) {
-                                if (_usuarioService.usuarioStore.usuario.admin) {
-                                  return InkWell(
+                            Container(width: double.maxFinite, height: 150, child: Image.network(atividade.foto, fit: BoxFit.cover,),),
+
+                            SizedBox(
+                              height: 10,
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                              child: Text(atividade.nome, style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                              child: Text(atividade.descricao, style: TextStyle(color: Colors.black54), overflow: TextOverflow.ellipsis, maxLines: 4),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                              child: Text("Início: ${DateFormat("dd/MM/yyyy HH:mm").format(atividade.dataHoraInicio)}",
+                                  style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                              child: Text("Término: ${DateFormat("dd/MM/yyyy HH:mm").format(atividade.dataHoraFim)}",
+                                  style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)),
+                            ),
+
+                            Expanded(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: <Widget>[
+                                  Observer(
+                                    builder: (ctx) {
+                                      if (_usuarioService.usuarioStore.usuario.admin) {
+                                        return InkWell(
+                                          onTap: () {},
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(20),
+                                            child: Text("Editar"),
+                                          ),
+                                        );
+                                      } else {
+                                        return SizedBox.shrink();
+                                      }
+                                    },
+                                  ),
+
+                                  InkWell(
                                     onTap: () {},
                                     child: Padding(
                                       padding: const EdgeInsets.all(20),
-                                      child: Text("Editar"),
+                                      child: Text("Avise-me"),
                                     ),
-                                  );
-                                } else {
-                                  return SizedBox.shrink();
-                                }
-                              },
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Text("Avise-me"),
+                                  )
+
+                                ],
                               ),
                             )
+
                           ],
                         ),
-                      )
-                    ],
-                  ),
-                ),
-              ));
-            }).toList(),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              );
+            },
+          );
+
+          return Observer(
+            builder: (_) {
+              return ListView(
+                children: snapshot.data.map((atividade) {
+                  return Card(
+                      child: InkWell(
+                        child: Container(
+                          height: 370,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(width: double.maxFinite, height: 150, child: Image.network(atividade.foto, fit: BoxFit.cover)),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                                child: Text(atividade.nome, style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                                child: Text(atividade.descricao, style: TextStyle(color: Colors.black54), overflow: TextOverflow.ellipsis, maxLines: 4),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                                child: Text("Início: ${DateFormat("dd/MM/yyyy HH:mm").format(atividade.dataHoraInicio)}",
+                                    style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                                child: Text("Término: ${DateFormat("dd/MM/yyyy HH:mm").format(atividade.dataHoraInicio)}",
+                                    style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)),
+                              ),
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: <Widget>[
+                                    Observer(
+                                      builder: (ctx) {
+                                        if (_usuarioService.usuarioStore.usuario.admin) {
+                                          return InkWell(
+                                            onTap: () {},
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(20),
+                                              child: Text("Editar"),
+                                            ),
+                                          );
+                                        } else {
+                                          return SizedBox.shrink();
+                                        }
+                                      },
+                                    ),
+                                    InkWell(
+                                      onTap: () {},
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(20),
+                                        child: Text("Avise-me"),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ));
+                }).toList(),
+              );
+            },
           );
         },
       ),
