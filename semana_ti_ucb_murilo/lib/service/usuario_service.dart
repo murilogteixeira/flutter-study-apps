@@ -25,7 +25,7 @@ class UsuarioService {
   }
 
   Future<Usuario> entrarComEmailSenha(String email, String senha) async {
-    Usuario usuarioLogado = Usuario(nome: "Diego Ferreira", email: email);
+    Usuario usuarioLogado = Usuario(nome: "Murilo Teixeira", email: email);
     _preferences.setString("usuario_logado", jsonEncode(usuarioLogado.toJson()));
     usuarioStore.setUsuario(usuarioLogado);
     usuarioStore.setStatusLogin(StatusLogin.logado);
