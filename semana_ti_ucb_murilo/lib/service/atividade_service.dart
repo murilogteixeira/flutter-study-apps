@@ -9,9 +9,7 @@ class AtividadeService {
   AtividadeService(this.atividadeStore);
 
   Future<List<Atividade>> buscarAtividades() {
-    return Future.delayed(Duration(seconds: 2), () {
-      return Future.value(atividadeStore.atividades);
-    });
+    return Future.value(atividadeStore.atividades);
   }
 
   Future<Atividade> salvar(Atividade atividade){

@@ -1,6 +1,7 @@
 import 'package:semanatiucbmurilo/domain/atividade.dart';
 import 'package:semanatiucbmurilo/service/atividade_service.dart';
 import 'package:semanatiucbmurilo/service/usuario_service.dart';
+import 'package:semanatiucbmurilo/utils/message_utils.dart';
 import 'package:semanatiucbmurilo/widgets/form/date_time_form.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -53,6 +54,7 @@ class AtividadeScreenState extends State<AtividadeScreen> {
 
       Atividade atividade = Atividade(nome: _nome, descricao: _descricao, local: _local, dataHoraInicio: _dataHoraInicio, dataHoraFim: _dataHoraFim, foto: "https://picsum.photos/200");
       _atividadeService.salvar(atividade).then((value) {
+        showInfo("Atividade adicionada");
         Navigator.of(context).pop();
       });
     }
