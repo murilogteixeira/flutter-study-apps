@@ -29,19 +29,19 @@ abstract class _TaskBase with Store {
   @action
   setCheck(bool value) => check = value;
 
-  factory _TaskBase.fromJson(Map<String, dynamic> json) {
+  fromJson(Map<String, dynamic> json) {
     return Task(
         title: json["title"],
         description: json["description"],
-        deadline: json["deadline"],
+        deadline: DateTime.fromMillisecondsSinceEpoch(json["deadline"]),
         check: json["check"]);
   }
 
-  Map<String, Object> toJson() {
+  toJson() {
     return {
       "title": this.title,
       "description": this.description,
-      "deadline": this.deadline.millisecond,
+      "deadline": this.deadline.millisecondsSinceEpoch,
       "check": this.check
     };
   }

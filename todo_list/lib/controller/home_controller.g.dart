@@ -24,11 +24,33 @@ mixin _$HomeController on _HomeControllerBase, Store {
     });
   }
 
+  final _$nomeUsuarioAtom = Atom(name: '_HomeControllerBase.nomeUsuario');
+
+  @override
+  String get nomeUsuario {
+    _$nomeUsuarioAtom.reportRead();
+    return super.nomeUsuario;
+  }
+
+  @override
+  set nomeUsuario(String value) {
+    _$nomeUsuarioAtom.reportWrite(value, super.nomeUsuario, () {
+      super.nomeUsuario = value;
+    });
+  }
+
   final _$addTaskAsyncAction = AsyncAction('_HomeControllerBase.addTask');
 
   @override
   Future addTask(Task task) {
     return _$addTaskAsyncAction.run(() => super.addTask(task));
+  }
+
+  final _$updateTaskAsyncAction = AsyncAction('_HomeControllerBase.updateTask');
+
+  @override
+  Future updateTask(Task task) {
+    return _$updateTaskAsyncAction.run(() => super.updateTask(task));
   }
 
   final _$_HomeControllerBaseActionController =
@@ -46,9 +68,20 @@ mixin _$HomeController on _HomeControllerBase, Store {
   }
 
   @override
+  dynamic checkTask(Task task, bool value) {
+    final _$actionInfo = _$_HomeControllerBaseActionController.startAction(
+        name: '_HomeControllerBase.checkTask');
+    try {
+      return super.checkTask(task, value);
+    } finally {
+      _$_HomeControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-
+nomeUsuario: ${nomeUsuario}
     ''';
   }
 }

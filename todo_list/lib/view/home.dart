@@ -1,10 +1,11 @@
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:intl/intl.dart';
-import 'package:todo_list/components/task_widget.dart';
+import 'package:todo_list/view/components/date_time_widget.dart';
+import 'package:todo_list/view/components/task_widget.dart';
 import 'package:todo_list/controller/home_controller.dart';
 import 'package:todo_list/model/task.dart';
+
+enum Opcao { add, update }
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -20,33 +21,43 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        bottom: TabBar(
-          tabs: [
-            Tab(text: "Pendentes"),
-            Tab(text: "Concluídos"),
-          ],
+    controller.getNomeSP();
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: TabBar(
+            tabs: [
+              Tab(text: "Pendentes"),
+              Tab(text: "Concluídos"),
+            ],
+          ),
+          title: Observer(builder: (_) {
+            return Text("Tarefas de ${controller.nomeUsuario}");
+          }),
+          // automaticallyImplyLeading: false,
         ),
-        title: Text(widget.title),
-      ),
-      body: TabBarView(
-        children: [
-          _pendentes(),
-          _concluidos(),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _dialog,
-        // tooltip: 'Increment',
-        child: Icon(Icons.add),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: TabBarView(
+            children: [
+              _pendentes(),
+              _concluidos(),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _dialog(null),
+          // tooltip: 'Increment',
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }
 
   _pendentes() {
     var tasks = controller.pendentes;
-
+    controller.getListaSP();
     return Observer(
       builder: (_) {
         return ListView.builder(
@@ -59,8 +70,9 @@ class _HomeState extends State<Home> {
                   controller.removeTask(task);
                 },
                 onClickTask: () {
-                  _dialog();
+                  _dialog(task);
                 },
+                controller: controller,
               );
             });
       },
@@ -69,7 +81,7 @@ class _HomeState extends State<Home> {
 
   _concluidos() {
     var concluidos = controller.concluidos;
-
+    controller.getListaSP();
     return Observer(
       builder: (_) {
         return ListView.builder(
@@ -81,27 +93,41 @@ class _HomeState extends State<Home> {
                 onClickRemoveTask: () {
                   controller.removeTask(task);
                 },
+                onClickTask: () {
+                  _dialog(task);
+                },
+                controller: controller,
               );
             });
       },
     );
   }
 
-  _dialog() {
-    Task task = Task(deadline: DateTime.now());
+  _dialog(Task task) {
+    Opcao opcao;
+
+    if (task == null) {
+      task = Task(deadline: DateTime.now());
+      opcao = Opcao.add;
+    } else {
+      opcao = Opcao.update;
+    }
+
+    var title = opcao == Opcao.add ? "Nova Tarefa" : "Editar Tarefa";
 
     showDialog(
         context: context,
         builder: (_) {
           return AlertDialog(
-            title: Text("Nova Tarefa"),
+            title: Text(title),
             content: Container(
               width: 300,
               height: 230,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextField(
+                  TextFormField(
+                    initialValue: task.title,
                     onChanged: task.setTitle,
                     autofocus: true,
                     decoration: InputDecoration(
@@ -110,7 +136,8 @@ class _HomeState extends State<Home> {
                   SizedBox(
                     height: 10,
                   ),
-                  TextField(
+                  TextFormField(
+                    initialValue: task.description,
                     onChanged: task.setDescription,
                     autofocus: true,
                     decoration: InputDecoration(
@@ -119,49 +146,46 @@ class _HomeState extends State<Home> {
                   SizedBox(
                     height: 10,
                   ),
-                  DateTimeField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: "Prazo"),
-                    format: DateFormat("dd/MM/yyyy HH:mm"),
-                    onShowPicker: (context, currentValue) async {
-                      final date = await showDatePicker(
-                          context: context,
-                          firstDate: DateTime(1900),
-                          initialDate: currentValue ?? DateTime.now(),
-                          lastDate: DateTime(2100));
-                      if (date != null) {
-                        final time = await showTimePicker(
-                          context: context,
-                          initialTime: TimeOfDay.fromDateTime(
-                              currentValue ?? DateTime.now()),
-                        );
-                        var value = DateTimeField.combine(date, time);
-                        task.setDeadline(value);
-                        return value;
-                      } else {
-                        return currentValue;
-                      }
-                    },
-                  )
+                  DateTimeWidget(task: task),
                 ],
               ),
             ),
-            actions: [
-              FlatButton(
-                child: Text("Cancelar"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              FlatButton(
-                child: Text("Salvar"),
-                onPressed: () {
-                  controller.addTask(task);
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+            actions: _actions(opcao, task),
           );
         });
+  }
+
+  _actions(Opcao opcao, Task task) {
+    if (opcao == Opcao.add) {
+      return [
+        FlatButton(
+          child: Text("Cancelar"),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        FlatButton(
+          child: Text("Salvar"),
+          onPressed: () {
+            if (opcao == Opcao.add) {
+              controller.addTask(task);
+            } else {
+              controller.updateTask(task);
+            }
+            Navigator.pop(context);
+          },
+        ),
+      ];
+    } else {
+      return [
+        FlatButton(
+          child: Text("Concluído"),
+          onPressed: () {
+            controller.salvarListaSP();
+            Navigator.pop(context);
+          },
+        ),
+      ];
+    }
   }
 }

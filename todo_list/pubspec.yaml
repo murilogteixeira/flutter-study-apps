@@ -33,6 +33,7 @@ dependencies:
   datetime_picker_formfield:
   intl:
   shared_preferences:
+  bot_toast:
 
 dev_dependencies:
   mobx_codegen:
