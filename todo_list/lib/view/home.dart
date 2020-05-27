@@ -47,7 +47,7 @@ class _HomeState extends State<Home> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => _dialog(null),
+          onPressed: () => _dialogoNovaTask(null),
           // tooltip: 'Increment',
           child: Icon(Icons.add),
         ),
@@ -67,10 +67,11 @@ class _HomeState extends State<Home> {
               return TaskWidget(
                 task: task,
                 onClickRemoveTask: () {
-                  controller.removeTask(task);
+                  // controller.removeTask(task);
+                  _alertaRemoverTask(task);
                 },
                 onClickTask: () {
-                  _dialog(task);
+                  _dialogoNovaTask(task);
                 },
                 controller: controller,
               );
@@ -91,10 +92,11 @@ class _HomeState extends State<Home> {
               return TaskWidget(
                 task: task,
                 onClickRemoveTask: () {
-                  controller.removeTask(task);
+                  // controller.removeTask(task);
+                  _alertaRemoverTask(task);
                 },
                 onClickTask: () {
-                  _dialog(task);
+                  _dialogoNovaTask(task);
                 },
                 controller: controller,
               );
@@ -103,7 +105,31 @@ class _HomeState extends State<Home> {
     );
   }
 
-  _dialog(Task task) {
+  _alertaRemoverTask(Task task) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text(
+                "Tem certeza que deseja excluir a tarefa \"${task.title}\""),
+            actions: [
+              FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Cancelar")),
+              FlatButton(
+                  onPressed: () {
+                    controller.removeTask(task);
+                    Navigator.pop(context);
+                  },
+                  child: Text("Excluir")),
+            ],
+          );
+        });
+  }
+
+  _dialogoNovaTask(Task task) {
     Opcao opcao;
 
     if (task == null) {
