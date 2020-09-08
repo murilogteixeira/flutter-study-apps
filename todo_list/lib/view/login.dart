@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
-  Login({Key key, this.title}) : super(key: key);
+  Login({Key key}) : super(key: key);
 
-  final String title;
+  final String title = 'Bem Vindo!';
 
   @override
   _LoginState createState() => _LoginState();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_list/view/home.dart';
 import 'package:todo_list/view/login.dart';
 import 'package:todo_list/view/splash.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 void main() => runApp(MyApp());
 
@@ -11,21 +12,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final homeTitle = 'Lista de tarefas';
-  final loginTitle = 'Bem Vindo!';
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: homeTitle,
+      title: 'Todo list',
       theme: ThemeData(
         primarySwatch: Colors.indigo,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Splash(),
       routes: {
-        '/home': (context) => Home(title: homeTitle),
-        '/login': (context) => Login(title: loginTitle),
+        '/home': (context) => Home(),
+        '/login': (context) => Login(),
       },
     );
   }

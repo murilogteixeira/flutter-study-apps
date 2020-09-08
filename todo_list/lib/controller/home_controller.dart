@@ -46,7 +46,6 @@ abstract class _HomeControllerBase with Store {
     var prefs = await SharedPreferences.getInstance();
     var nome = prefs.getString('nome');
     nomeUsuario = nome;
-    print(nome);
   }
 
   pendentes() {

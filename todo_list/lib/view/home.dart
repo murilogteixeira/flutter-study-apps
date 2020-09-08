@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:todo_list/view/components/date_time_widget.dart';
-import 'package:todo_list/view/components/task_widget.dart';
 import 'package:todo_list/controller/home_controller.dart';
 import 'package:todo_list/model/task.dart';
+
+import 'widgets/date_time_widget.dart';
+import 'widgets/task_widget.dart';
 
 enum Opcao { add, update }
 
 class Home extends StatefulWidget {
-  Home({Key key, this.title}) : super(key: key);
+  Home({Key key}) : super(key: key);
 
-  final String title;
+  final String title = 'Lista de tarefas';
 
   @override
   _HomeState createState() => _HomeState();
